@@ -1,0 +1,23 @@
+server:
+  port: 8090
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/mq-producer?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8
+    driverClassName: com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    username: root
+    password: root
+    maxActive: 1000
+    initialSize: 100
+    maxWait: 60000
+    minIdle: 500
+mybatis:
+  configuration:
+    default-fetch-size: 100
+    default-statement-timeout: 3000
+    map-underscore-to-camel-case: true
+  mapperLocations: classpath:cn/wolfcode/mapper/*Mapper.xml
+rocketmq:
+  name-server: 10.112.173.28:9876
+  producer:
+    group: mq-producer-group
