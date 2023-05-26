@@ -28,7 +28,7 @@ public class OrderInfoServiceImpl implements IOrderInfoService {
     private OrderInfoMapper orderInfoMapper;
     @Override
     @Transactional
-    public String refund(String orderNo) {
+    public String refund(String orderNo){
         System.out.println("发送消息");
         OrderInfo orderInfo = orderInfoMapper.select(orderNo);
         OperateIntergralVo vo = new OperateIntergralVo();
@@ -48,6 +48,7 @@ public class OrderInfoServiceImpl implements IOrderInfoService {
         if (LocalTransactionState.COMMIT_MESSAGE.equals(result.getLocalTransactionState())){
             return "退款成功";
         }else {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return "退款失败";
         }
     }
