@@ -31,7 +31,8 @@ public class OrderTransactionMessageListener implements RocketMQLocalTransaction
             //本地业务逻辑
             iOrderInfoService.updateRefundStatus(OrderNo);
             System.out.println("执行成功");
-            return RocketMQLocalTransactionState.COMMIT;
+//            return RocketMQLocalTransactionState.COMMIT;
+            return RocketMQLocalTransactionState.UNKNOWN;
         }catch (Exception e){
             System.out.println("执行失败");
             e.printStackTrace();
@@ -47,9 +48,11 @@ public class OrderTransactionMessageListener implements RocketMQLocalTransaction
         OrderInfo orderInfo = iOrderInfoService.find(orderNo);
         if (OrderInfo.STATUS_REFUND.equals(orderInfo.getStatus())){
             //已经退款成功,说明本地事务执行成功
+            System.out.println("返回成功");
             return RocketMQLocalTransactionState.COMMIT;
         }else {
             //说明本地事务执行失败
+            System.out.println("返回失败");
             return RocketMQLocalTransactionState.ROLLBACK;
         }
     }

@@ -48,7 +48,9 @@ public class OrderInfoServiceImpl implements IOrderInfoService {
         if (LocalTransactionState.COMMIT_MESSAGE.equals(result.getLocalTransactionState())){
             return "退款成功";
         }else {
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            if (LocalTransactionState.ROLLBACK_MESSAGE.equals(result.getLocalTransactionState())){
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            }
             return "退款失败";
         }
     }
@@ -57,7 +59,7 @@ public class OrderInfoServiceImpl implements IOrderInfoService {
     @Transactional
     public void updateRefundStatus(String orderNo) {
         orderInfoMapper.changeRefundStatus(orderNo, OrderInfo.STATUS_REFUND);
-        int i = 1/0;
+//        int i = 1/0;//测试异常情况
     }
 
     @Override
